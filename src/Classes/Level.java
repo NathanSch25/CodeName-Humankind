@@ -21,6 +21,7 @@ import java.util.Set;
 
 
 public class Level {
+    private HashMap<Entity, String> ObjectMap = new HashMap<>();
     private ArrayList<int[]> Map = new ArrayList<>();
     private HashMap<String, ArrayList<String>> NavMap = new HashMap<>();
 
@@ -127,19 +128,25 @@ public class Level {
        return new ArrayList<>(); //No Valid Paths Found, Empty List Returned
     }
 
-    //TODO: This function update|create an object mapping to some position on our grid
-    public boolean SetObjectPosition(Object obj, Integer[] position)
+    //This function update|create an object mapping to some position on our grid, returns the string position of the object
+    public String SetObjectPosition(Entity targetEntity, Integer[] position)
     {
-        return false;
+        return ObjectMap.put(targetEntity, position[0]+","+position[1]);
     }
 
-    //TODO: Function will return the position of the object, (Given the object exists within the map)
-    public Integer[] GetObjectPosition(Object obj){
-        return null;
+    //This Function will return the position of the object, (Given the object exists within the map) , returns the string position of the object i.e ("4,19")
+    public String GetObjectPosition(Entity targetEntity){
+        return ObjectMap.get(targetEntity);
     }
 
-    //TODO: Function will determine if a space is occupied by another npc
+    //This function will return true if the space is occupied by a obstacle or entity
     public boolean isOccupied(int x, int y){
+        String targetPosition = x+","+y;
+
+        //Checks for object at position, or wall. 
+        if(ObjectMap.containsValue(targetPosition) || Map.get(x)[y] == 1){
+            return true;
+        }
         return false;
     }
     public static void main(String[] args){

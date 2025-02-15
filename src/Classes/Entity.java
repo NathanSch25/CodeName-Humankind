@@ -5,8 +5,7 @@ import java.util.Hashtable;
 
 public class Entity {
     //Entity Varaiables
-    boolean isPlayer;
-    Status EntityStats; 
+    Dictionary<Stat,Float> Status = new Hashtable<>();
     Dictionary<Stat,Float> ModifierTable = new Hashtable<>();
     float Allignment;
     
