@@ -131,7 +131,9 @@ public class Level {
     //This function update|create an object mapping to some position on our grid, returns the string position of the object
     public String SetObjectPosition(Entity targetEntity, Integer[] position)
     {
-        return ObjectMap.put(targetEntity, position[0]+","+position[1]);
+        String setPosition = ObjectMap.put(targetEntity, position[0]+","+position[1]);
+        this.GenerateNavMap();
+        return setPosition;
     }
 
     //This Function will return the position of the object, (Given the object exists within the map) , returns the string position of the object i.e ("4,19")
