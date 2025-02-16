@@ -48,7 +48,7 @@ public class Player extends Entity {
     public void DrawCards(int Amount) {
         for (int x = 0; x < Amount; x++) {
             int R = (int) (Math.random() * Deck.size());
-            if (!Hand.get(R).Att.Action) {
+            if (!Deck.get(R).Att.Action) {
                 Deck.remove(R);
                 x--;
                 continue;
