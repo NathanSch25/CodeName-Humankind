@@ -1,0 +1,21 @@
+CREATE SCHEMA `codename_humankind` ;
+
+CREATE TABLE `codename_humankind`.`item_table` (
+  `name` VARCHAR(45) NOT NULL,
+  `corruption` DOUBLE NULL,
+  `modifiers` VARCHAR(45) NULL,
+  PRIMARY KEY (`name`));
+
+
+  CREATE TABLE `codename_humankind`.`modifiershash` (
+  `Modifier` VARCHAR(45) NOT NULL,
+  `value` DOUBLE NULL,
+  `entityName` VARCHAR(45) NOT NULL,
+  PRIMARY KEY (`Modifier`, `entityName`));
+
+
+  CREATE TABLE `codename_humankind`.`columns` (
+  `Username` VARCHAR(45) NOT NULL,
+  `Password` VARCHAR(45) NULL,
+  `CurrTimeLine` VARCHAR(45) NULL,
+  PRIMARY KEY (`Username`));
