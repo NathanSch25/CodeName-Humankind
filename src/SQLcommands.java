@@ -118,7 +118,7 @@ public class SQLcommands {
         return(null);
     }
     
-    public String SetModifierValue(String entity, String modifier, int increment) {
+    public void SetModifierValue(String entity, String modifier, int increment) {
         try {
             Connection connection = DriverManager.getConnection(
                 SQLaddress,
@@ -160,11 +160,9 @@ public class SQLcommands {
         } catch (Exception e) {
             System.out.println(e);
         }
-        //return("-1");
-    
-        return("-1");
+        
     }
-    public String AddItem(String itemname, String corruption, String modifierName, String modifierValue) {
+    public void AddItem(String itemname, String corruption, String modifierName, String modifierValue) {
         try {
             Connection connection = DriverManager.getConnection(
                 SQLaddress,
@@ -177,12 +175,12 @@ public class SQLcommands {
             Statement statement = connection.createStatement();
             String searchQuery = "INSERT INTO item_table (name, corruption) VALUES (" + itemname + ", " + corruption +")";
             statement.executeUpdate(searchQuery);
-            return("Added");
+            
             } catch (Exception e) {
                 System.out.println(e);
             }
             SetModifierValue(itemname, modifierName, Integer.parseInt(modifierValue));
-        return("Not Added");
+        
     }
     public void SetTimeLine(String username, String timeline) {
         try {
@@ -211,6 +209,22 @@ public class SQLcommands {
             password = "'" + password + "'";
             Statement statement = connection.createStatement();
             String searchQuery = "INSERT INTO user_table (username, password) VALUES (" + username + ", " + password +")";
+            statement.executeUpdate(searchQuery);
+            } catch (Exception e) {
+                System.out.println(e);
+            }
+    }
+    public void UpdateTimeLine(String username, String timeline) {
+        try {
+            Connection connection = DriverManager.getConnection(
+                SQLaddress,
+                "root",
+                "test"
+            );
+            username = "'" + username + "'";
+            timeline = "'" + GetTimeLine(username) + timeline + "'";
+            Statement statement = connection.createStatement();
+            String searchQuery = "UPDATE user_table SET CurrTimeLine = " + timeline + " WHERE username = " + username;
             statement.executeUpdate(searchQuery);
             } catch (Exception e) {
                 System.out.println(e);
