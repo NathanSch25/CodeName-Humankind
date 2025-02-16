@@ -365,16 +365,21 @@ public class GamePanel extends JPanel implements Runnable {
 
         // All AI characters
         for (int x = 0; x < Units.size(); x++) {
-            g2.setColor(Units.get(x).Good ? Color.green : Color.pink);
-            g2.fillRect(Units.get(x).x - Units.get(x).CSize / 2, Units.get(x).y - Units.get(x).CSize / 2, Units.get(x).CSize, Units.get(x).CSize);
+            imageIcon = new ImageIcon(Units.get(x).Good ? ImageChooser(1) : ImageChooser(3));
+            image = imageIcon.getImage();
 
-            if (Units.get(x).Health != Units.get(x).MaxHP + 1) {
-                g2.setColor(Color.BLACK);
-                g2.fillRect(Units.get(x).x - Units.get(x).CSize / 2, Units.get(x).y - Units.get(x).CSize / 2 - 10, Units.get(x).CSize, 10);
+            g2.drawImage(image, Units.get(x).x - Units.get(x).CSize / 2, Units.get(x).y - Units.get(x).CSize / 2, this);
+            // .setVisible(true);
+            // g2.setColor(Units.get(x).Good ? Color.green : Color.pink);
+            // g2.fillRect(Units.get(x).x - Units.get(x).CSize / 2, Units.get(x).y - Units.get(x).CSize / 2, Units.get(x).CSize, Units.get(x).CSize);
 
-                g2.setColor(Color.red);
-                g2.fillRect(Units.get(x).x - Units.get(x).CSize / 2, Units.get(x).y - Units.get(x).CSize / 2 - 10, (int) (Units.get(x).CSize * (Units.get(x).Health / Units.get(x).MaxHP)), 10);
-            }
+        //     if (Units.get(x).Health != Units.get(x).MaxHP + 1) {
+        //         g2.setColor(Color.BLACK);
+        //         g2.fillRect(Units.get(x).x - Units.get(x).CSize / 2, Units.get(x).y - Units.get(x).CSize / 2 - 10, Units.get(x).CSize, 10);
+
+        //         g2.setColor(Color.red);
+        //         g2.fillRect(Units.get(x).x - Units.get(x).CSize / 2, Units.get(x).y - Units.get(x).CSize / 2 - 10, (int) (Units.get(x).CSize * (Units.get(x).Health / Units.get(x).MaxHP)), 10);
+        //     }
         }
 
         // Where the player will move to
