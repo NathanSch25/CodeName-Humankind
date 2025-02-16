@@ -1,5 +1,7 @@
-import java.awt.*;
 import javax.swing.*;
+import java.awt.*;
+import java.io.*;
+import java.net.*;
 
 public class Main {
     public static void main(String[] args) {
@@ -24,22 +26,19 @@ public class Main {
         JButton[] Choice = new JButton[MaxChoices + 1];
         for (int x = 0; x < MaxChoices + 1; x++) {
             Choice[x] = new JButton();
-            Choice[x].setBounds(50, 125 * x + 25, 200, 100);
+            Choice[x].setBounds(25, 125 * x + 25, 175, 100);
             Choice[x].setBackground(Color.WHITE);
             Choice[x].setVisible(MaxChoices != x);
             Actions.add(Choice[x]);
         }
 
-        Actions.setPreferredSize(new Dimension(300, 100 * MaxChoices + 185));
+        Actions.setPreferredSize(new Dimension(400, 100 * MaxChoices + 185));
         Actions.setBackground(Color.white);
-        Actions.setFocusable(true);
+        Actions.setFocusable(false);
         Actions.setLocationRelativeTo(null);
         Actions.setVisible(true);
         Actions.pack();
-        
-        //Level lvl = new Level();
-            
+
         game.startGT(Actions, Choice);
-        //System.out.println(lvl.SimpleSearch("1,1", "19,19"));
     }
 }
