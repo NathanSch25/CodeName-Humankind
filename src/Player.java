@@ -30,7 +30,7 @@ public class Player extends Entity {
         AllAtt.add(new P7());
         AllAtt.add(new P7());
         AllAtt.add(new P7());
-        AllAtt.add(new P8());
+        AllAtt.add(new P10());
         AllAtt.add(new P9());
         AllAtt.add(new P9());
 

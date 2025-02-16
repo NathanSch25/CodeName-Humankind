@@ -53,8 +53,7 @@ public class P9 extends Upgrade {
 
     @Override
     public void drawAttack(Graphics2D g2) {
-        g2.setColor(Color.MAGENTA);
-        g2.fillRect(0, GamePanel.player.NextY - (int) (25 * GamePanel.player.Range / 2), 1250, (int) (25 * GamePanel.player.Range));
-        g2.fillRect(GamePanel.player.NextX - (int) (25 * GamePanel.player.Range / 2), 0, (int) (25 * GamePanel.player.Range), 1250);
+        g2.setColor(Color.BLUE);
+        g2.fillRoundRect(GamePanel.player.NextX-100, GamePanel.player.NextY-100, 200, 200, -100, -100);
     }
 }
