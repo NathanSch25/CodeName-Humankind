@@ -45,11 +45,14 @@ public class GamePanel extends JPanel implements Runnable {
                 int x = e.getX();
                 int y = e.getY();
 
-                player.SetPos(x, y);
-                String Path = Generator.SimpleSearch(Convert(player), Convert(x , y)).toString();
+                // player.SetPos(x, y);
+                String Path = Generator.SimpleSearch(Convert(player), Convert(x, y)).toString();
                 int[] Location = STI(new int[]{(1 + Generator.Width * player.x / SWidth), (1 + Generator.Height * player.y / SHeight)}, Path, player.Speed);
-                System.out.println("End Pos : " + Location[0] + ", " + Location[1]);
-                if (Location != player.GetPosition()) {
+                System.out.println("Pos : {" + (1 + Location[0] * Generator.Width / SWidth) + ", " + (1 + Location[1] * Generator.Height / SHeight) + "}");
+                if (Generator.Map.get(1 + Location[0] * Generator.Width / SWidth)[1 + Location[1] * Generator.Height / SHeight] == 1) {
+                    System.out.println("No Wall PLZ");
+                } else {
+                    System.out.println("End Pos : " + Location[0] + ", " + Location[1]);
                     player.SetPos(Location[0], Location[1]);
                 }
                 // System.out.println("Mouse clicked at coordinates: (" + x + ", " + y + ")");
@@ -58,9 +61,9 @@ public class GamePanel extends JPanel implements Runnable {
         addMouseMotionListener(new MouseMotionListener() {
             @Override
             public void mouseMoved(MouseEvent e) {
-                // int x = e.getX();
-                // int y = e.getY();
-                // System.out.println("Mouse moved to: (" + x + ", " + y + ")");
+                // // int x = e.getX();
+                // // int y = e.getY();
+                // // System.out.println("Mouse moved to: (" + x + ", " + y + ")");
             }
 
             @Override
@@ -75,6 +78,35 @@ public class GamePanel extends JPanel implements Runnable {
         this.setFocusable(true);
     }
 
+    // public void LoadLevel() {
+    //     Generator.GenerateMap();
+    //     player.AddBuffs();
+    //     int S = (int) (Math.random() * 2) + 4;
+    //     Units = new ArrayList<>();
+    //     for (int x = 0; x < S; x++) {
+    //         Units.add(new AI((int) (Math.random() * SWidth), (int) (Math.random() * SHeight), 100));
+    //     }
+    // }
+
+    // public void startGT(JFrame Acts, JButton[] Butt) {
+    //     for (int x = 0; x < 5; x++) {
+    //         int finalX = x;
+    //         if (x < player.Hand.size()) {
+    //             Butt[x].setText(player.Hand.get(x).Att.Name);
+    //             Butt[x].setVisible(true);
+    //         } else {
+    //             Butt[x].setVisible(false);
+    //         }
+    //         Butt[x].addActionListener(e -> {
+    //             for (int y = 0; y < 5; y++) {
+    //                 Butt[y].setBackground(y == finalX ? Color.yellow : Color.lightGray);
+    //             }
+    //             KeyH.Action = finalX + 1;
+    //             System.out.println("Action " + KeyH.Action + "!");
+    //         });
+    //     }
+    //     ActionPage = Acts;
+    //     ActButtons = Butt;
     public void LoadLevel() {
         Generator.GenerateMap();
         player.AddBuffs();
@@ -122,6 +154,7 @@ public class GamePanel extends JPanel implements Runnable {
 
             try {
                 double remainingTime = nextDraw - System.nanoTime();
+                
                 remainingTime = remainingTime / 1000000;
 
                 if (remainingTime < 0) {
@@ -130,6 +163,7 @@ public class GamePanel extends JPanel implements Runnable {
 
                 Thread.sleep((long) remainingTime);
 
+                nextDraw += drawInt;
                 nextDraw += drawInt;
             } catch (InterruptedException e) {
                 e.printStackTrace();
@@ -252,13 +286,13 @@ public class GamePanel extends JPanel implements Runnable {
             player.y -= player.Speed / 100;
         }
         if (KeyH.down) {
-            player.y += player.Speed / 100;
+            player.y += player.Speed / 100 / 100;
         }
         if (KeyH.left) {
-            player.x -= player.Speed / 100;
+            player.x -= player.Speed / 100 / 100;
         }
         if (KeyH.right) {
-            player.x += player.Speed / 100;
+            player.x += player.Speed / 100 / 100;
         }
     }
 
@@ -271,6 +305,28 @@ public class GamePanel extends JPanel implements Runnable {
 
         Graphics2D g2 = (Graphics2D) g;
 
+        // Where the player can move
+        if (player.Stun == 0) {
+            g2.setColor(Color.LIGHT_GRAY);
+            g2.fillOval(player.x - player.Speed, player.y - player.Speed, player.Speed * 2, player.Speed * 2);
+        }
+
+        // Map (AKA Walls)
+        for (int x = 1; x < Generator.Map.size() - 1; x++) {
+            for (int y = 1; y < Generator.Map.get(x).length - 1; y++) {
+                if (Generator.Map.get(x)[y] == 1) {
+                    g2.setColor(Color.BLACK);
+                    g2.fillRect((x - 1) * SWidth / Generator.Width, (y - 1) * SHeight / Generator.Height, SWidth / Generator.Width, SHeight / Generator.Height);
+                }
+            }
+        }
+
+        try {
+            player.Hand.get(PlayerAction - 1).drawAttack(g2);
+        } catch (IndexOutOfBoundsException ignored) {}
+
+
+        // Player
         // Where the player can move
         if (player.Stun == 0) {
             g2.setColor(Color.LIGHT_GRAY);
@@ -323,6 +379,35 @@ public class GamePanel extends JPanel implements Runnable {
             g2.setColor(Color.pink);
             g2.fillRect(player.NextX - tSize / 4, player.NextY - tSize / 4, tSize / 2, tSize / 2);
         }
+        g2.fillRect(player.x - player.CSize / 2, player.y - player.CSize / 2, player.CSize, player.CSize);
+
+        // Blue Squares
+        g2.setColor(Color.blue);
+        for (int x = 0; x < Generator.Width; x++) {
+            for (int y = 0; y < Generator.Height; y++) {
+                g2.fillRect((SWidth * x) / Generator.Width + (SWidth / 4 / Generator.Width), (SHeight * y) / Generator.Height + (SHeight / 4 / Generator.Height), SWidth / 2 / Generator.Width, SHeight / 2 / Generator.Height);
+            }
+        }
+
+        // All AI characters
+        for (int x = 0; x < Units.size(); x++) {
+            g2.setColor(Units.get(x).Good ? Color.green : Color.pink);
+            g2.fillRect(Units.get(x).x - Units.get(x).CSize / 2, Units.get(x).y - Units.get(x).CSize / 2, Units.get(x).CSize, Units.get(x).CSize);
+
+            if (Units.get(x).Health != Units.get(x).MaxHP + 1) {
+                g2.setColor(Color.BLACK);
+                g2.fillRect(Units.get(x).x - Units.get(x).CSize / 2, Units.get(x).y - Units.get(x).CSize / 2 - 10, Units.get(x).CSize, 10);
+
+                g2.setColor(Color.red);
+                g2.fillRect(Units.get(x).x - Units.get(x).CSize / 2, Units.get(x).y - Units.get(x).CSize / 2 - 10, (int) (Units.get(x).CSize * (Units.get(x).Health / Units.get(x).MaxHP)), 10);
+            }
+        }
+
+        // Where the player will move to
+        if (player.Allowed) {
+            g2.setColor(Color.pink);
+            g2.fillRect(player.NextX - tSize / 4, player.NextY - tSize / 4, tSize / 2, tSize / 2);
+        }
 
         g2.dispose();
     }
@@ -333,38 +418,38 @@ public class GamePanel extends JPanel implements Runnable {
     public String Convert (int x, int y) {
         return "" + (1 + Generator.Width * x / SWidth) + "," + (1 + Generator.Height * y / SHeight);
     }
-    public int[] STI(int[] Start, String Path, float Speed) {
-        Path = Path.substring(1, Path.length() - 1);
-        if (Objects.equals(Path, "")) {
-            return Start;
-        }
+    // public int[] STI(int[] Start, String Path, float Speed) {
+    //     Path = Path.substring(1, Path.length() - 1);
+    //     if (Objects.equals(Path, "")) {
+    //         return Start;
+    //     }
 
-        float[] Travel = new float[]{(float) SWidth / Generator.Width, (float) SHeight / Generator.Height};
-        String[] Values = Path.split(",");
-        int c = 0;
-        System.out.println("Start Speed : " + Speed);
-        while (Speed > 0 && c < Values.length - 2) {
-            int Num;
-            try {
-                Num = Integer.parseInt(Values[c]);
-            } catch (NumberFormatException ignored) {
-                Num = Integer.parseInt(Values[c].substring(1));
-            }
-            System.out.println("Before : {" + Start[0] + ", " + Start[1] + "}\nAfter : {" + Num + ", " + Integer.parseInt(Values[c + 1]) + "}");
-            Speed -= Math.abs(Start[0] - Num) * Travel[0] + Math.abs(Start[1] - Integer.parseInt(Values[c + 1])) * Travel[1];
-            Start = new int[] {Num, Integer.parseInt(Values[c + 1])};
-            c += 2;
-            System.out.println("New Speed : " + Speed);
-        }
+    //     float[] Travel = new float[]{(float) SWidth / Generator.Width, (float) SHeight / Generator.Height};
+    //     String[] Values = Path.split(",");
+    //     int c = 0;
+    //     System.out.println("Start Speed : " + Speed);
+    //     while (Speed > 0 && c < Values.length - 2) {
+    //         int Num;
+    //         try {
+    //             Num = Integer.parseInt(Values[c]);
+    //         } catch (NumberFormatException ignored) {
+    //             Num = Integer.parseInt(Values[c].substring(1));
+    //         }
+    //         System.out.println("Before : {" + Start[0] + ", " + Start[1] + "}\nAfter : {" + Num + ", " + Integer.parseInt(Values[c + 1]) + "}");
+    //         Speed -= Math.abs(Start[0] - Num) * Travel[0] + Math.abs(Start[1] - Integer.parseInt(Values[c + 1])) * Travel[1];
+    //         Start = new int[] {Num, Integer.parseInt(Values[c + 1])};
+    //         c += 2;
+    //         System.out.println("New Speed : " + Speed);
+    //     }
 
-        int Num;
-        try {
-            Num = Integer.parseInt(Values[c]);
-        } catch (NumberFormatException ignored) {
-            Num = Integer.parseInt(Values[c].substring(1));
-        }
-        return new int[] {(int) (Num * Travel[0]) - (SWidth / 2 / Generator.Width), (int) (Integer.parseInt(Values[c + 1]) * Travel[1]) - (SHeight / 2 / Generator.Height)};
-    }
+    //     int Num;
+    //     try {
+    //         Num = Integer.parseInt(Values[c]);
+    //     } catch (NumberFormatException ignored) {
+    //         Num = Integer.parseInt(Values[c].substring(1));
+    //     }
+    //     return new int[] {(int) (Num * Travel[0]) - (SWidth / 2 / Generator.Width), (int) (Integer.parseInt(Values[c + 1]) * Travel[1]) - (SHeight / 2 / Generator.Height)};
+    // }
     public String intToCords(int index){
         String out = String.format("%d, %d", GamePanel.Units.get(index).x, GamePanel.Units.get(index).y);
         return out;
@@ -379,5 +464,39 @@ public class GamePanel extends JPanel implements Runnable {
         cordsnum[1] = Integer.parseInt(parts[1]);
 
         return cordsnum;
+    }
+
+    public int[] STI(int[] Start, String Path, float Speed) {
+        Path = Path.substring(1, Path.length() - 1);
+        if (Objects.equals(Path, "")) {
+            return Start;
+        }
+
+        float[] Travel = new float[]{(float) SWidth / Generator.Width, (float) SHeight / Generator.Height};
+        String[] Values = Path.split(",");
+        int c = 0;
+        //System.out.println("Start Speed : " + Speed);
+        while (Speed > 0 && c < Values.length - 2) {
+            int Num;
+            try {
+                Num = Integer.parseInt(Values[c]);
+            } catch (NumberFormatException ignored) {
+                Num = Integer.parseInt(Values[c].substring(1));
+            }
+            //System.out.println("Before : {" + Start[0] + ", " + Start[1] + "}\nAfter : {" + Num + ", " + Integer.parseInt(Values[c + 1]) + "}");
+            Speed -= Math.abs(Start[0] - Num) * Travel[0] + Math.abs(Start[1] - Integer.parseInt(Values[c + 1])) * Travel[1];
+            Start = new int[] {Num, Integer.parseInt(Values[c + 1])};
+            c += 2;
+            //System.out.println("New Speed : " + Speed);
+        }
+
+        int Num;
+        try {
+            Num = Integer.parseInt(Values[c]);
+        } catch (NumberFormatException ignored) {
+            Num = Integer.parseInt(Values[c].substring(1));
+        }
+        // System.out.println("Cords : " + ((int) (Num * Travel[0]) - (SWidth / 2 / Generator.Width)) + " " + ((int) (Integer.parseInt(Values[c + 1]) * Travel[1]) - (SHeight / 2 / Generator.Height)));
+        return new int[] {(int) (Num * Travel[0]) - (SWidth / 2 / Generator.Width), (int) (Integer.parseInt(Values[c + 1]) * Travel[1]) - (SHeight / 2 / Generator.Height)};
     }
 }
