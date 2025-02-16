@@ -13,12 +13,8 @@ public class Upgrade {
         public void WhenAttacked(Entity Self, Entity Enemy, int Damage) {}
         @Override
         public void Attack(Entity Self, int[] TargetPos, float Range) {}
-        @Override
-        public boolean TakeOver(Entity Self) { return false;}
     };
     Upgrade() {}
 
     public void drawAttack(Graphics2D g2) {}
-
-    
 }

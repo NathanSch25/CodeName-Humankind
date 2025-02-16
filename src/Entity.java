@@ -4,7 +4,7 @@ import java.util.Hashtable;
 
 public class Entity {
     //Entity Varaiables
-    ArrayList<Upgrade> ModifierTable = new ArrayList<>();
+    ArrayList<Upgrade> AllAtt = new ArrayList<>();
 
     String Name;
     // Entity Position
@@ -21,11 +21,52 @@ public class Entity {
     public float Hurt;
     public Upgrade Active = new Upgrade();
 
+    public Entity(GamePanel Screen, Level Map) {}
     public Entity(int a, int b, int c) {
         Hurt = Health;
         x = a;
         y = b;
         Speed = c;
+    }
+    public void Silly(int a, int b, int c) {
+        Hurt = Health;
+        x = a;
+        y = b;
+        Speed = c;
+    }
+
+    public void SetRPos(GamePanel Screen, Level Map) {
+        int xPos = 0;
+        int yPos = 0;
+        int SafeCount = 1000;
+        while (SafeCount != 0) {
+            xPos = (int) ((Map.Width * Math.random()));
+            yPos = (int) ((Map.Height * Math.random()));
+
+            if (Map.Map.get(xPos + 1)[yPos + 1] == 0) {
+                break;
+            }
+            SafeCount--;
+        }
+        Silly((int) ((xPos + .5f) * Screen.SWidth / Map.Width), (int) ((yPos + .5f) * Screen.SHeight / Map.Height), Speed);
+    }
+
+    public void AddBuffs() {
+        // Load Base Stats
+        Roboness = 0;
+        MaxHP = 100;
+        Damage = 10;
+        Speed = 200;
+        Range = 1;
+
+        for (int x = 0; x < AllAtt.size(); x++) {
+            Roboness += AllAtt.get(x).Robo;
+            MaxHP += AllAtt.get(x).ExtraHP;
+            Damage += AllAtt.get(x).ExtraDamage;
+            Speed += AllAtt.get(x).Speed;
+            Range += AllAtt.get(x).Range;
+        }
+        Health = MaxHP;
     }
 
     public void StunEnemy(int Length) {

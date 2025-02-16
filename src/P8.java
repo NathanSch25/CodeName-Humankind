@@ -17,11 +17,6 @@ public class P8 extends Upgrade {
         // laser beam
         Att = new Style() {
             @Override
-            public boolean TakeOver(Entity Self) {
-                return false;
-            }
-            
-            @Override
             public void Pain(Entity Self, float Amount) {
             }
 
@@ -32,12 +27,18 @@ public class P8 extends Upgrade {
             @Override
             public void Attack(Entity Self, int[] TargetPos, float Range) {
                 for (int x = 0; x < GamePanel.Units.size(); x++) {
-                    if (Self == GamePanel.Units.get(x)) {
+                    if (Self == GamePanel.Units.get(x) || (Self != GamePanel.player && Self.Good == GamePanel.Units.get(x).Good)) {
                         continue;
                     }
 
-                    if (Math.abs(TargetPos[0] - GamePanel.Units.get(x).x) < 25 * Range || Math.abs(TargetPos[1] - GamePanel.Units.get(x).y) < 25 * Range) {
-                        GamePanel.Units.get(x).Dam(Self, Self.Damage * 1.7f);
+                    if (Math.abs(TargetPos[0] - GamePanel.Units.get(x).x) < 25 * Self.Range || Math.abs(TargetPos[1] - GamePanel.Units.get(x).y) < 25 * Self.Range) {
+                        GamePanel.Units.get(x).Dam(Self, Self.Damage * 1.2f);
+                    }
+                }
+
+                if (Self != GamePanel.player && !Self.Good) {
+                    if (Math.abs(TargetPos[0] - GamePanel.player.x) < 25 * Self.Range || Math.abs(TargetPos[1] - GamePanel.player.y) < 25 * Self.Range) {
+                        GamePanel.player.Dam(Self, Self.Damage * 1.2f);
                     }
                 }
             }

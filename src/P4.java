@@ -10,11 +10,6 @@ public class P4 extends Upgrade {
         // Punch Attack
         Att = new Style() {
             @Override
-            public boolean TakeOver(Entity Self) {
-                return false;
-            }
-            
-            @Override
             public void Pain(Entity Self, float Amount) {
                 if (Amount < 20) {
                     Self.Heal(Self, 20);

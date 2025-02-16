@@ -16,11 +16,6 @@ public class P7 extends Upgrade {
         // Punch Attack
         Att = new Style() {
             @Override
-            public boolean TakeOver(Entity Self) {
-                return false;
-            }
-            
-            @Override
             public void Pain(Entity Self, float Amount) {}
             @Override
             public void WhenAttacked(Entity Self, Entity Enemy, int Range) {}
@@ -29,12 +24,12 @@ public class P7 extends Upgrade {
                 Entity Closest = null;
                 float Dis = -1;
                 for (int x = 0; x < GamePanel.Units.size(); x++) {
-                    if (Self == GamePanel.Units.get(x)) {
+                    if (Self == GamePanel.Units.get(x) || (Self != GamePanel.player && Self.Good == GamePanel.Units.get(x).Good)) {
                         continue;
                     }
 
                     float TDis = (float) Math.sqrt(Math.pow(GamePanel.Units.get(x).x - TargetPos[0], 2) + Math.pow(GamePanel.Units.get(x).y - TargetPos[1], 2));
-                    if (TDis <= 300 * Range) {
+                    if (TDis <= 300 * Self.Range) {
                         if (Dis < TDis || Dis == -1) {
                             Closest = GamePanel.Units.get(x);
                             Dis = TDis;
@@ -42,8 +37,17 @@ public class P7 extends Upgrade {
                     }
                 }
 
+                if (Self != GamePanel.player && !Self.Good) {
+                    float TDis = (float) Math.sqrt(Math.pow(GamePanel.player.x - TargetPos[0], 2) + Math.pow(GamePanel.player.y - TargetPos[1], 2));
+                    if (TDis <= 300 * Self.Range) {
+                        if (Dis < TDis || Dis == -1) {
+                            Closest = GamePanel.player;
+                        }
+                    }
+                }
+
                 if (Closest != null) {
-                    Closest.Dam(Self, Self.Damage * 1.5f);
+                    Closest.Dam(Self, Self.Damage * 1.3f);
                 }
             }
         };

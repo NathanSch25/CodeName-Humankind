@@ -12,19 +12,14 @@ public class P2 extends Upgrade {
         // Absorb
         Att = new Style() {
             @Override
-            public boolean TakeOver(Entity Self) {
-                return false;
-            }
-            
-            @Override
             public void Pain(Entity Self, float Amount) {
                 for (int x = 0; x < GamePanel.Units.size(); x++) {
-                    if (Self == GamePanel.Units.get(x)) {
+                    if (Self == GamePanel.Units.get(x) || (Self != GamePanel.player && Self.Good == GamePanel.Units.get(x).Good)) {
                         continue;
                     }
 
                     float TDis = (float) Math.sqrt(Math.pow(GamePanel.Units.get(x).x - Self.x, 2) + Math.pow(GamePanel.Units.get(x).y - Self.y, 2));
-                    if (TDis <= 140 + 10 * Range) {
+                    if (TDis <= 90 + 10 * Self.Range) {
                         GamePanel.Units.get(x).Dam(Self, Math.max((Self.Hurt - Self.Health) * (Self.Damage / 10f), 0));
                     }
                 }
@@ -43,7 +38,7 @@ public class P2 extends Upgrade {
     @Override
     public void drawAttack(Graphics2D g2) {
         g2.setColor(Color.MAGENTA);
-        g2.drawOval(GamePanel.player.NextX - (int) (140 + 10 * GamePanel.player.Range), GamePanel.player.NextY - (int) (140 + 10 * GamePanel.player.Range), (int) (2 * 140 + 10 * GamePanel.player.Range), (int) (2 * 140 + 10 * GamePanel.player.Range));
+        g2.drawOval(GamePanel.player.NextX - (int) (90 + 10 * GamePanel.player.Range), GamePanel.player.NextY - (int) (90 + 10 * GamePanel.player.Range), (int) (2 * 90 + 10 * GamePanel.player.Range), (int) (2 * 90 + 10 * GamePanel.player.Range));
     }
 
     // Add Methods and / or Special Attacks
