@@ -188,23 +188,25 @@ public class GamePanel extends JPanel implements Runnable {
             player.Move();
 
             // Player Action
-            try {
-                System.out.println("" + player.Hand);
-                player.Active = player.Hand.remove(PlayerAction - 1);
-                player.Active.Att.Attack(player, player.GetPosition(), player.Range);
-                player.RemoveHand();
-                for (int x = 0; x < ActButtons.length; x++) {
-                    if (x < player.Hand.size()) {
-                        ActButtons[x].setText(player.Hand.get(x).Att.Name);
-                        ActButtons[x].setVisible(true);
-                    } else {
-                        ActButtons[x].setVisible(false);
+            if (!(forceCard(player.Health))){
+                try {
+                    System.out.println("" + player.Hand);
+                    player.Active = player.Hand.remove(PlayerAction - 1);
+                    player.Active.Att.Attack(player, player.GetPosition(), player.Range);
+                    player.RemoveHand();
+                    for (int x = 0; x < ActButtons.length; x++) {
+                        if (x < player.Hand.size()) {
+                            ActButtons[x].setText(player.Hand.get(x).Att.Name);
+                            ActButtons[x].setVisible(true);
+                        } else {
+                            ActButtons[x].setVisible(false);
+                        }
                     }
+                } catch (IndexOutOfBoundsException ignored) {
+                    player.ShuffleDeck();
+                    ignored.printStackTrace();
+                    //System.out.println("Nope, fuck you");
                 }
-            } catch (IndexOutOfBoundsException ignored) {
-                player.ShuffleDeck();
-                ignored.printStackTrace();
-                //System.out.println("Nope, fuck you");
             }
             
             // Do Ally Move + Action
@@ -528,5 +530,14 @@ public class GamePanel extends JPanel implements Runnable {
             System.out.println("Error: " + e);
         }
         return path;
+    }
+
+    boolean forceCard(float plHealth){
+        if (plHealth < 20){
+            player.Active = (new P10());
+            player.Active.Att.Attack(player, player.GetPosition(), player.Range);
+            return true;
+        }
+        return false;
     }
 }
