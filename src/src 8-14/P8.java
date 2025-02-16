@@ -2,7 +2,7 @@ package src 8-14;
 
 import com.sun.jdi.connect.AttachingConnector;
 
-public class P7 extends Upgrade {
+public class P8 extends Upgrade {
     /*
     public int Robo;
     public int ExtraHP;
@@ -11,7 +11,7 @@ public class P7 extends Upgrade {
     public int Range;
     public int Speed;
      */
-    P7() {
+    P8() {
         // laser beam
         Att = new Style() {
             @Override
