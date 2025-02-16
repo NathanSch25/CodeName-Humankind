@@ -17,6 +17,11 @@ public class P8 extends Upgrade {
         // laser beam
         Att = new Style() {
             @Override
+            public boolean TakeOver(Entity Self) {
+                return false;
+            }
+            
+            @Override
             public void Pain(Entity Self, float Amount) {
             }
 

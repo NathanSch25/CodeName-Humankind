@@ -17,6 +17,11 @@ public class P9 extends Upgrade {
         // refractor master
         Att = new Style() {
             @Override
+            public boolean TakeOver(Entity Self) {
+                return false;
+            }
+
+            @Override
             public void Pain(Entity Self, float Amount) {
                 Self.Health -= 20;
                 float dammageTaken = (Self.Hurt - Self.Health);
@@ -56,4 +61,5 @@ public class P9 extends Upgrade {
         g2.setColor(Color.BLUE);
         g2.fillRoundRect(GamePanel.player.NextX-100, GamePanel.player.NextY-100, 200, 200, -100, -100);
     }
+    
 }

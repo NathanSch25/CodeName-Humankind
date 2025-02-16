@@ -12,6 +12,11 @@ public class P2 extends Upgrade {
         // Absorb
         Att = new Style() {
             @Override
+            public boolean TakeOver(Entity Self) {
+                return false;
+            }
+            
+            @Override
             public void Pain(Entity Self, float Amount) {
                 for (int x = 0; x < GamePanel.Units.size(); x++) {
                     if (Self == GamePanel.Units.get(x)) {

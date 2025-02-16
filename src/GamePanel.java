@@ -188,7 +188,14 @@ public class GamePanel extends JPanel implements Runnable {
             player.Move();
 
             // Player Action
-            if (!(forceCard(player.Health))){
+            // Loop through hand
+            for (int i =0; i < player.Hand.size(); i++){
+                if ((player.Hand.get(i).Att).TakeOver()){
+                    player.Active = player.Hand.remove(i);
+                    player.Active.Att.Attack(player, player.GetPosition(), player.Range);
+                    player.RemoveHand();
+                }
+            }
                 try {
                     System.out.println("" + player.Hand);
                     player.Active = player.Hand.remove(PlayerAction - 1);
@@ -271,11 +278,12 @@ public class GamePanel extends JPanel implements Runnable {
                     Units.remove(x);
                     x--;
                 }
-            }
+            
             player.IfHurt();
             PlayerTurn = true;
             return;
         }
+    
         if (KeyH.FinishTurn) {
             KeyH.Action = 0;
             PlayerTurn = false;

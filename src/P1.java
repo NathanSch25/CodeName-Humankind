@@ -12,6 +12,11 @@ public class P1 extends Upgrade {
         // Punch Attack
         Att = new Style() {
             @Override
+            public boolean TakeOver(Entity Self) {
+                return false;
+            }
+            
+            @Override
             public void Pain(Entity Self, float Amount) {}
             @Override
             public void WhenAttacked(Entity Self, Entity Enemy, int Damage) {}
