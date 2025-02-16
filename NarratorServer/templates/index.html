@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dialogue Generator</title>
+</head>
+<body>
+    <h1>Dialogue Generator</h1>
+    <form id="dialogueForm">
+        <label for="gameId">Game ID:</label>
+        <input type="text" id="gameId" name="gameId" required><br><br>
+        <label for="turn">Turn:</label>
+        <input type="number" id="turn" name="turn" required><br><br>
+        <label for="entities">Entities (JSON format):</label><br>
+        <textarea id="entities" name="entities" rows="10" cols="50" required></textarea><br><br>
+        <label for="map">Map (1|0 Format):</label><br>
+        <textarea id="map" name="map" rows="18" cols="14"></textarea><br><br>
+        <button type="submit">Generate Dialogue</button>
+    </form>
+    <div id="result"></div>
+    <hr>
+    <h2>Replay Game Dialogue</h2>
+    <input type="text" id="replayGameId" placeholder="Enter Game ID">
+    <button onclick="replayGame()">Replay</button>
+    <div id="replayResult"></div>
+
+    <script>
+        document.getElementById('dialogueForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const gameId = document.getElementById('gameId').value;
+            const turn = document.getElementById('turn').value;
+            const entities = JSON.parse(document.getElementById('entities').value);
+            const map = document.getElementById('map').value;
+
+            const response = await fetch('/generate_dialogue', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ game_id: gameId, currentTurn: turn, entities: entities, map: map}),
+            });
+            
+            const data = await response.json();
+            document.getElementById('result').innerText = JSON.stringify(data.dialogue_sequence, null, 2);
+        });
+
+        async function replayGame() {
+            const gameId = document.getElementById('replayGameId').value;
+            const response = await fetch(`/get_game_dialogue?game_id=${gameId}`);
+            const data = await response.json();
+            document.getElementById('replayResult').innerText = JSON.stringify(data, null, 2);
+        }
+    </script>
+</body>
+</html>
