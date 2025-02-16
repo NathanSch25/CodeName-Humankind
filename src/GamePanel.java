@@ -349,16 +349,19 @@ public class GamePanel extends JPanel implements Runnable {
 
 
         // Player
-        g2.setColor(Color.white);
-        g2.fillRect(player.x - player.CSize / 2, player.y - player.CSize / 2, player.CSize, player.CSize);
+        ImageIcon imageIcon = new ImageIcon(ImageChooser(2));
+        Image image = imageIcon.getImage();
+
+        g2.drawImage(image, player.x - tSize / 2, player.y - tSize / 2, this);
+        //g2.fillRect(player.x - player.CSize / 2, player.y - player.CSize / 2, player.CSize, player.CSize);
 
         // Blue Squares
-        g2.setColor(Color.blue);
-        for (int x = 0; x < Generator.Width; x++) {
-            for (int y = 0; y < Generator.Height; y++) {
-                g2.fillRect((SWidth * x) / Generator.Width + (SWidth / 4 / Generator.Width), (SHeight * y) / Generator.Height + (SHeight / 4 / Generator.Height), SWidth / 2 / Generator.Width, SHeight / 2 / Generator.Height);
-            }
-        }
+        // g2.setColor(Color.blue);
+        // for (int x = 0; x < Generator.Width; x++) {
+        //     for (int y = 0; y < Generator.Height; y++) {
+        //         g2.fillRect((SWidth * x) / Generator.Width + (SWidth / 4 / Generator.Width), (SHeight * y) / Generator.Height + (SHeight / 4 / Generator.Height), SWidth / 2 / Generator.Width, SHeight / 2 / Generator.Height);
+        //     }
+        // }
 
         // All AI characters
         for (int x = 0; x < Units.size(); x++) {
@@ -375,11 +378,11 @@ public class GamePanel extends JPanel implements Runnable {
         }
 
         // Where the player will move to
-        if (player.Allowed) {
-            g2.setColor(Color.pink);
-            g2.fillRect(player.NextX - tSize / 4, player.NextY - tSize / 4, tSize / 2, tSize / 2);
-        }
-        g2.fillRect(player.x - player.CSize / 2, player.y - player.CSize / 2, player.CSize, player.CSize);
+        // if (player.Allowed) {
+        //     g2.setColor(Color.pink);
+        //     g2.fillRect(player.NextX - tSize / 4, player.NextY - tSize / 4, tSize / 2, tSize / 2);
+        // }
+        // g2.fillRect(player.x - player.CSize / 2, player.y - player.CSize / 2, player.CSize, player.CSize);
 
         // Blue Squares
         g2.setColor(Color.blue);
@@ -498,5 +501,27 @@ public class GamePanel extends JPanel implements Runnable {
         }
         // System.out.println("Cords : " + ((int) (Num * Travel[0]) - (SWidth / 2 / Generator.Width)) + " " + ((int) (Integer.parseInt(Values[c + 1]) * Travel[1]) - (SHeight / 2 / Generator.Height)));
         return new int[] {(int) (Num * Travel[0]) - (SWidth / 2 / Generator.Width), (int) (Integer.parseInt(Values[c + 1]) * Travel[1]) - (SHeight / 2 / Generator.Height)};
+    }
+    public String ImageChooser(int entity) {
+        String path = "";
+        try {
+            switch (entity) {
+                case 1:
+                    return "src/human.png";
+                    
+                case 2:
+                    return "src/player.png";
+                    
+                case 3:
+                    return "src/robot.png";
+                    
+                default:
+                    path = "src/err.png";
+                    break;
+            }
+        } catch (Exception e) {
+            System.out.println("Error: " + e);
+        }
+        return path;
     }
 }
