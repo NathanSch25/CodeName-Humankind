@@ -1,10 +1,10 @@
-import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
 import java.util.ArrayList;
 import java.util.Objects;
+import javax.swing.*;
 
 public class GamePanel extends JPanel implements Runnable {
     final int ogTS = 16;
@@ -172,9 +172,63 @@ public class GamePanel extends JPanel implements Runnable {
                 ignored.printStackTrace();
                 //System.out.println("Nope, fuck you");
             }
-
+            
             // Do Ally Move + Action
+            //Geting cordants to move to
+            int j;
+            for (j = 0; j < GamePanel.Units.size(); j++){
+                if (!Units.get(j).Good){
+                    break;
+                }
+            }
+            Level level = new Level();
+            for(int i = 0; i < GamePanel.Units.size(); i++){
+                if (Units.get(i).Good){
+                    String starting = intToCords(i);
+                    String enimie = intToCords(j);
+                    String cordsL = "";
+                    for(String x : level.SimpleSearch(starting, enimie)){
+                        cordsL += ',' + x;
+                    }
+                    
+                    //moving to found cordnats
+                    int[] cords = cordsToInt(i, cordsL);
+                    GamePanel.Units.get(i).x = cords[0];
+                    GamePanel.Units.get(i).y = cords[1];
+                    System.out.println("teammate moved to " + cords[0] + ", " + cords[1]);
+                }
+                
+            } 
+    
             // Do Enemy Move + Action
+            //geting cordanats to move to
+            for (j = 0; j < GamePanel.Units.size(); j++){
+                if (!Units.get(j).Good){
+                    break;
+                }
+            }
+            for(int i = 0; i < GamePanel.Units.size(); i++){
+                if (!(Units.get(i).Good)){
+                    String starting = intToCords(i);
+                    String enimie = intToCords(j);
+                    String cordsL = "";
+
+                    for(String x : level.SimpleSearch(starting, enimie)){
+                        cordsL += x;
+                        System.err.println("Our Search Results: "+x);
+                    }
+                    
+                    if("".equals(cordsL)){continue;}
+                    
+                    //moving to found cordnats
+                    int[] cords = cordsToInt(i, cordsL);
+                    GamePanel.Units.get(i).x = cords[0];
+                    GamePanel.Units.get(i).y = cords[1];
+                    System.out.println("enemy moved to " + cords[0] + ", " + cords[1]);
+                }
+                
+            } 
+
 
             for (int x = 0; x < Units.size(); x++) {
                 if (Units.get(x).IfHurt()) {
@@ -310,5 +364,20 @@ public class GamePanel extends JPanel implements Runnable {
             Num = Integer.parseInt(Values[c].substring(1));
         }
         return new int[] {(int) (Num * Travel[0]) - (SWidth / 2 / Generator.Width), (int) (Integer.parseInt(Values[c + 1]) * Travel[1]) - (SHeight / 2 / Generator.Height)};
+    }
+    public String intToCords(int index){
+        String out = String.format("%d, %d", GamePanel.Units.get(index).x, GamePanel.Units.get(index).y);
+        return out;
+    }
+    public int[] cordsToInt(int index, String cords){
+        System.err.println("Splitting: "+cords);
+        String[] parts = cords.split(", ");
+        System.out.println(cords+"   "+parts[0]+" "+parts[1]);
+                
+        int[] cordsnum = {0, 0};
+        cordsnum[0] = Integer.parseInt(parts[0]);
+        cordsnum[1] = Integer.parseInt(parts[1]);
+
+        return cordsnum;
     }
 }

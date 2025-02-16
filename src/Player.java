@@ -15,6 +15,7 @@ public class Player extends Entity {
 
         NextX = a;
         NextY = b;
+        
 
         // Starting Cards
         /*
@@ -30,8 +31,8 @@ public class Player extends Entity {
         AllAtt.add(new P7());
         AllAtt.add(new P7());
         AllAtt.add(new P8());
-        AllAtt.add(new P8());
-        AllAtt.add(new P8());
+        AllAtt.add(new P9());
+        AllAtt.add(new P9());
 
         ShuffleDeck();
         Good = true;

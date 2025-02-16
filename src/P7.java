@@ -38,7 +38,7 @@ public class P7 extends Upgrade {
                 }
 
                 if (Closest != null) {
-                    Closest.Dam(Self, Self.Damage * 1.3f);
+                    Closest.Dam(Self, Self.Damage * 1.5f);
                 }
             }
         };

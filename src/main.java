@@ -1,7 +1,5 @@
-import javax.swing.*;
 import java.awt.*;
-import java.io.*;
-import java.net.*;
+import javax.swing.*;
 
 public class Main {
     public static void main(String[] args) {
@@ -38,7 +36,10 @@ public class Main {
         Actions.setLocationRelativeTo(null);
         Actions.setVisible(true);
         Actions.pack();
-
+        
+        //Level lvl = new Level();
+            
         game.startGT(Actions, Choice);
+        //System.out.println(lvl.SimpleSearch("1,1", "19,19"));
     }
 }

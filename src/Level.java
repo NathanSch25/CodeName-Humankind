@@ -26,7 +26,7 @@ public class Level {
     private HashMap<Entity, String> ObjectMap = new HashMap<>();
     public ArrayList<int[]> Map = new ArrayList<>();
     private HashMap<String, ArrayList<String>> NavMap = new HashMap<>();
-
+   
     //This function generates the map, essentially parsing our text file into a 2d array
     public void GenerateMap(){
         //Read Lines From required file
@@ -36,6 +36,7 @@ public class Level {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        
     
         //Convert lines to array elements for our map
         for(String line:lines){
@@ -122,7 +123,7 @@ public class Level {
             visited.add(current);
 
             //Explore neighbor tiles;
-            List<String> neighbors = NavMap.getOrDefault(current, new ArrayList<String>());
+            List<String> neighbors = NavMap.getOrDefault(current, new ArrayList<>());
             for (String neighbor: neighbors){
                 List<String> newPath = new ArrayList<>(path);
                 newPath.add(neighbor);

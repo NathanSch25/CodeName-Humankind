@@ -32,7 +32,7 @@ public class P8 extends Upgrade {
                     }
 
                     if (Math.abs(TargetPos[0] - GamePanel.Units.get(x).x) < 25 * Range || Math.abs(TargetPos[1] - GamePanel.Units.get(x).y) < 25 * Range) {
-                        GamePanel.Units.get(x).Dam(Self, Self.Damage * 1.2f);
+                        GamePanel.Units.get(x).Dam(Self, Self.Damage * 1.7f);
                     }
                 }
             }
