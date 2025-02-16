@@ -1,13 +1,14 @@
 package src.Classes;
 
+import java.util.ArrayList;
 import java.util.Dictionary;
 import java.util.Hashtable;
 
 public class Entity {
     //Entity Varaiables
-    boolean isPlayer;
-    Status EntityStats; 
-    Dictionary<Stat,Float> ModifierTable = new Hashtable<>();
+    Dictionary<Stat,Float> Status = new Hashtable<>();
+    ArrayList<Stat,Float> ModifierTable = new ArrayList<>(); 
+
     float Allignment;
     
     // Entity Position

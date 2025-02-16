@@ -1,5 +1,3 @@
-package src.Classes;
-
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -22,7 +20,7 @@ import java.util.Set;
 
 public class Level {
     private HashMap<Entity, String> ObjectMap = new HashMap<>();
-    private ArrayList<int[]> Map = new ArrayList<>();
+    public ArrayList<int[]> Map = new ArrayList<>();
     private HashMap<String, ArrayList<String>> NavMap = new HashMap<>();
 
     //This function generates the map, essentially parsing our text file into a 2d array
@@ -30,7 +28,7 @@ public class Level {
         //Read Lines From required file
         ArrayList<String> lines = new ArrayList<>();
         try {
-            lines = new ArrayList<>(Files.readAllLines(Paths.get("src","Classes","TestMap.txt")));
+            lines = new ArrayList<>(Files.readAllLines(Paths.get("src","TestMap.txt")));
         } catch (IOException e) {
             e.printStackTrace();
         }
