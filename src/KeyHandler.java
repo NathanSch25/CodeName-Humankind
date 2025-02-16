@@ -1,10 +1,12 @@
-package src;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 public class KeyHandler implements KeyListener {
 
     public boolean up, down, left, right = false;
+    public boolean FinishTurn = false;
+    public int Action = 0;
+
     @Override
     public void keyTyped(KeyEvent e) {
 
@@ -41,6 +43,12 @@ public class KeyHandler implements KeyListener {
         }
         if (code == KeyEvent.VK_D) {
             right = false;
+        }
+        if (code == KeyEvent.VK_P) {
+            FinishTurn = true;
+        }
+        if (code == KeyEvent.VK_M) {
+            Action = Action == 1 ? 0 : 1;
         }
     }
 }
