@@ -7,14 +7,14 @@ CREATE TABLE `codename_humankind`.`item_table` (
   PRIMARY KEY (`name`));
 
 
-  CREATE TABLE `codename_humankind`.`modifiershash` (
+CREATE TABLE `codename_humankind`.`modifiershash` (
   `Modifier` VARCHAR(45) NOT NULL,
   `value` DOUBLE NULL,
   `entityName` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`Modifier`, `entityName`));
 
 
-  CREATE TABLE `codename_humankind`.`columns` (
+CREATE TABLE `codename_humankind`.`columns` (
   `Username` VARCHAR(45) NOT NULL,
   `Password` VARCHAR(45) NULL,
   `CurrTimeLine` VARCHAR(45) NULL,
